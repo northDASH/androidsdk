@@ -20,11 +20,11 @@ android {
         // the relevant attributes of the <uses-sdk> tag in AndroidManifest.xml
         minSdkVersion 9
         targetSdkVersion 21
-        testApplicationId "com.mixpanel.android.mpmetrics"
+        testApplicationId "com.alooma.android.mpmetrics"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
 
         lintOptions {
-            abortOnError true
+            abortOnError false
             warningsAsErrors true
         }
     }
@@ -102,12 +102,12 @@ uploadArchives {
             name project.name
             packaging 'aar'
             description 'An Android library for Mixpanel Analytics \n' +
-                    'http://mixpanel.com/android-analytics/'
-            url 'https://github.com/mixpanel/mixpanel-android'
+                    'http://alooma.com/android-analytics/'
+            url 'https://github.com/alooma/alooma-android'
             scm {
-                url 'http://github.com/mixpanel/mixpanel-android'
-                connection 'scm:git:http://github.com/mixpanel/mixpanel-android'
-                developerConnection 'scm:git:git@github.com:mixpanel/mixpanel-android.git'
+                url 'http://github.com/alooma/alooma-android'
+                connection 'scm:git:http://github.com/alooma/alooma-android'
+                developerConnection 'scm:git:git@github.com:alooma/alooma-android.git'
             }
             licenses {
                 license {
@@ -118,14 +118,9 @@ uploadArchives {
             }
             developers {
                 developer {
-                    id 'jbwyme'
-                    name 'Josh Wymer'
-                    email 'josh@mixpanel.com'
-                }
-                developer {
-                    id 'joeatwork'
-                    name 'Joe Bowers'
-                    email 'joe@mixpanel.com'
+                    id 'asdasd'
+                    name 'Asd asd'
+                    email 'info@alooma.com'
                 }
             }
         }
@@ -137,7 +132,7 @@ uploadArchives {
         if (isReleaseVersion() && project.hasProperty("sonatypeUsername")) {
             /**
              * In order to do nexus deploys, you'll need to setup a gradle.properties file in $HOME/.gradle
-             * with the following properties. You'll need the mixpanel.key file and then import it using GnuPG
+             * with the following properties. You'll need the alooma.key file and then import it using GnuPG
              * which will provide you with the keyId and the secring.gpg file
              * signing.keyId=
              * signing.password=

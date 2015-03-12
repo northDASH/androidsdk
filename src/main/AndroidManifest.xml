@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mixpanel.android">
+    package="com.alooma.android">
     <!-- To support customers who build from source with Eclipse, we have to
          include this redundant versioning here. If you change
          minSdkVersion or targetSdkVersion here, you must also
@@ -56,7 +56,7 @@
         <!-- to support 2.2 (Froyo) and older devices, your application should allow fallback
              to HTTP if modern HTTPS certificates aren't supported. -->
         <!--
-        <meta-data android:name="com.mixpanel.android.MPConfig.DisableFallback"
+        <meta-data android:name="aloomandroid.AConfig.DisableFallback"
             android:value="false" />
         -->
 
@@ -64,7 +64,7 @@
              app notifications every time a new Activity is displayed. To disable this behavior,
              add the following line. The default value for this option is set to true. -->
         <!--
-        <meta-data android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
+        <meta-data android:name="aloomandroid.AConfig.AutoShowMixpanelUpdates"
             android:value="false" />
         -->
 
@@ -72,7 +72,7 @@
              being tracked by Mixpanel. This is useful for testing the integration with your Android app.
              The default value is false. -->
         <!--
-        <meta-data android:name="com.mixpanel.android.MPConfig.TestMode"
+        <meta-data android:name="aloomandroid.AConfig.TestMode"
             android:value="true" />
         -->
 
@@ -80,7 +80,7 @@
              library. This may be useful in determining when track calls go out or in app notifications or
              surveys are fetched. The default value is false. -->
         <!--
-        <meta-data android:name="com.mixpanel.android.MPConfig.EnableDebugLogging"
+        <meta-data android:name="aloomandroid.AConfig.EnableDebugLogging"
             android:value="true" />
         -->
 
@@ -88,14 +88,14 @@
              If you only wish to show mini in app notifications, you do not need to declare this Activity.
              You may also specify a different theme to better fit the look and feel of your application. -->
         <!--
-        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
+        <activity android:name="aloomandroid.surveys.SurveyActivity"
                   android:theme="@style/com_mixpanel_android_SurveyActivityTheme" />
         -->
 
         <!-- This receiver will allow your application to register for and receive Mixpanel push notifications.
              Make sure to change YOUR_PACKAGE_NAME to your own applications package. -->
         <!--
-        <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
+        <receiver android:name="aloomandroid.mpmetrics.GCMReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -107,7 +107,7 @@
 
         <!-- This receiver will allow your application to record referrer parameters as super properties automatically -->
         <!--
-        <receiver android:name="com.mixpanel.android.mpmetrics.InstallReferrerReceiver" android:exported="true">
+        <receiver android:name="aloomandroid.mpmetrics.InstallReferrerReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>

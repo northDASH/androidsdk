@@ -45,12 +45,12 @@
             android:onClick="goToNextQuestion" />
     </RelativeLayout>
 
-    <com.mixpanel.android.surveys.CardCarouselLayout
+    <com.alooma.android.surveys.CardCarouselLayout
         android:id="@+id/com_mixpanel_android_question_card_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp" android:layout_gravity="center"
         android:layout_weight="1" android:orientation="vertical"
-        ></com.mixpanel.android.surveys.CardCarouselLayout>
+        ></com.alooma.android.surveys.CardCarouselLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -67,7 +67,7 @@
             android:contentDescription="@string/com_mixpanel_android_logo"
             />
 
-        <com.mixpanel.android.surveys.FadeOnPressButton
+        <com.alooma.android.surveys.FadeOnPressButton
             android:id="@+id/com_mixpanel_android_button_exit"
             android:layout_width="wrap_content"
             android:layout_height="30dp"

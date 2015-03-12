@@ -26,7 +26,7 @@ https://groups.google.com/forum/#!msg/android-developers/qcclW4oekVY/IeQtoAruCTg
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <com.mixpanel.android.surveys.AlwaysSubmittableEditText
+    <com.alooma.android.surveys.AlwaysSubmittableEditText
         android:tag="com_mixpanel_android_TAG_text_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

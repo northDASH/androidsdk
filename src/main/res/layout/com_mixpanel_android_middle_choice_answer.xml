@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--  Padding is hard coded in the component, to work around some limitations of CheckedTextView -->
-<com.mixpanel.android.surveys.SurveyChoiceView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.alooma.android.surveys.SurveyChoiceView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
