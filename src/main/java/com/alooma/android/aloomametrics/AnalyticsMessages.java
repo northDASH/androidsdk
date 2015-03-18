@@ -36,7 +36,7 @@ import java.util.Map;
  */
 /* package */ class AnalyticsMessages {
 
-    private final String mAloomaHost;
+    private String mAloomaHost;
 
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
@@ -552,6 +552,10 @@ import java.util.Map;
         private long mAveFlushFrequency = 0;
         private long mLastFlushTime = -1;
         private SystemInformation mSystemInformation;
+    }
+
+    public void setmAloomaHost(String mAloomaHost) {
+        this.mAloomaHost = mAloomaHost;
     }
 
     /////////////////////////////////////////////////////////

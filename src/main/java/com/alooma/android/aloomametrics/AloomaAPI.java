@@ -1807,7 +1807,15 @@ public class AloomaAPI {
     private final Context mContext;
     private final AnalyticsMessages mMessages;
     private final AConfig mConfig;
-    private final String mAloomaHost;
+
+    public void setmAloomaHost(String mAloomaHost) {
+        this.mAloomaHost = mAloomaHost;
+        if (mMessages != null) {
+            mMessages.setmAloomaHost(mAloomaHost);
+        }
+    }
+
+    private String mAloomaHost;
     private final String mToken;
     private final PeopleImpl mPeople;
     private final UpdatesFromMixpanel mUpdatesFromMixpanel;

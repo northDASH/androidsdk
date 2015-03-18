@@ -7,13 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import com.alooma.android.aloomametrics.AloomaAPI;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
+//import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
 public class aloomaTest extends Activity {
 
+    String target = "";
     AloomaAPI api = null;
-    MixpanelAPI mpapi = null;
+    //MixpanelAPI mpapi = null;
     int sendIndex = 0, batchIndex = 0;
 
     @Override
@@ -47,8 +48,7 @@ public class aloomaTest extends Activity {
 
 
     public void getAPI(View view) {
-        api = AloomaAPI.getInstance(this, "asadsa", "queen.alooma.io");
-        mpapi = MixpanelAPI.getInstance(this, "3ab30a61045ae164416305f49b780df6");
+        api = AloomaAPI.getInstance(this, "alooma", target);
     }
 
     public void sendEvent(View view) {
@@ -57,7 +57,7 @@ public class aloomaTest extends Activity {
             message = "Batch " + Integer.toString(batchIndex) + ":" + message;
         }
         api.track(message, null);
-        mpapi.track(message + " mixpanel", null);
+        //mpapi.track(message + " mixpanel", null);
         sendIndex++;
     }
 
@@ -68,5 +68,19 @@ public class aloomaTest extends Activity {
             sendEvent(null);
         }
         batchIndex++;
+    }
+
+    public void setTarget(View view) {
+        EditText targetPicker = (EditText) findViewById(R.id.machineNamePicker);
+        String target = targetPicker.getText().toString();
+        if (!target.matches("^[0-9a-zA-Z]+\\.alooma\\.io$")) {
+            targetPicker.setText("Invalid server name");
+        }
+        else {
+            this.target = target;
+            if (api != null) {
+                api.setmAloomaHost(target);
+            }
+        }
     }
 }
