@@ -1,3 +1,2 @@
-include ':tester'
 include ":"
-rootProject.name = "alooma-android"
+rootProject.name = "androidsdk"

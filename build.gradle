@@ -20,8 +20,6 @@ android {
         // the relevant attributes of the <uses-sdk> tag in AndroidManifest.xml
         minSdkVersion 9
         targetSdkVersion 21
-        testApplicationId "com.alooma.android.mpmetrics"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
 
         lintOptions {
             abortOnError false
@@ -72,7 +70,7 @@ android.libraryVariants.all { variant ->
 }
 
 android.buildTypes.all { buildType ->
-    buildType.buildConfigField "String", "MIXPANEL_VERSION", "\"${project.properties.version}\""
+    buildType.buildConfigField "String", "ALOOMA_VERSION", "\"${project.properties.version}\""
 }
 
 allprojects {
@@ -101,13 +99,13 @@ uploadArchives {
         pom.project {
             name project.name
             packaging 'aar'
-            description 'An Android library for Mixpanel Analytics \n' +
-                    'http://alooma.com/android-analytics/'
-            url 'https://github.com/alooma/alooma-android'
+            description 'An Android SDK to send analytics to alooma\n' +
+                    'http://alooma.io/'
+            url 'https://github.com/aloomaio/androidsdk'
             scm {
-                url 'http://github.com/alooma/alooma-android'
-                connection 'scm:git:http://github.com/alooma/alooma-android'
-                developerConnection 'scm:git:git@github.com:alooma/alooma-android.git'
+                url 'http://github.com/aloomaio/androidsdk'
+                connection 'scm:git:http://github.com/aloomaio/androidsdk'
+                developerConnection 'scm:git:git@github.com/aloomaio/androidsdk.git'
             }
             licenses {
                 license {
@@ -118,9 +116,9 @@ uploadArchives {
             }
             developers {
                 developer {
-                    id 'asdasd'
-                    name 'Asd asd'
-                    email 'info@alooma.com'
+                    id 'yb'
+                    name 'Yuval Barth'
+                    email 'yuval@alooma.io'
                 }
             }
         }

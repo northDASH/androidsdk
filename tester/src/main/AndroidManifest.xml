@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tester" >
+    package="com.github.aloomaio.androidsdk.tester" >
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name" >
         <activity
-            android:name=".aloomaTest"
+            android:name="com.github.aloomaio.androidsdk.tester.aloomaTest"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,6 +15,6 @@
             </intent-filter>
         </activity>
     </application>
-    <meta-data android:name="com.alooma.android.AConfig.DisableAppOpenEvent"
+    <meta-data android:name="com.github.aloomaio.androidsdk.AConfig.DisableAppOpenEvent"
         android:value="false" />
 </manifest>
