@@ -72,14 +72,9 @@ public class aloomaTest extends Activity {
     public void setTarget(View view) {
         EditText targetPicker = (EditText) findViewById(R.id.machineNamePicker);
         String target = targetPicker.getText().toString();
-        if (!target.matches("^[0-9a-zA-Z]+\\.alooma\\.io$")) {
-            targetPicker.setText("Invalid server name");
-        }
-        else {
-            this.target = target;
-            if (api != null) {
-                api.setmAloomaHost(target);
-            }
+        this.target = target;
+        if (api != null) {
+            api.setmAloomaHost(target);
         }
     }
 }

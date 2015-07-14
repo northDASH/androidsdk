@@ -1,13 +1,28 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+    repositories {
+        mavenCentral() // or jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.3'
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':')
+    compile "com.github.aloomaio.androidsdk:androidsdk:4.5.3"
+    compile "com.google.android.gms:play-services:3.1+"
 }
 
 android {
