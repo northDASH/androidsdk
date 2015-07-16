@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
-        mavenCentral() // or jcenter()
+        mavenLocal() // or jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -11,17 +12,19 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 }
 
 dependencies {
-    compile "com.github.aloomaio.androidsdk:androidsdk:4.5.3"
+    compile "com.github.aloomaio.androidsdk:androidsdk:5.0.0-SNAPSHOT"
     compile "com.google.android.gms:play-services:3.1+"
 }
 
