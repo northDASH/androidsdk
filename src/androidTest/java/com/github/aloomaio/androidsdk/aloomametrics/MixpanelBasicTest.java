@@ -12,6 +12,7 @@ import android.test.AndroidTestCase;
 import android.test.mock.MockContext;
 import android.test.mock.MockPackageManager;
 
+import com.github.aloomaio.androidsdk.test.BuildConfig;
 import com.github.aloomaio.androidsdk.util.Base64Coder;
 
 import org.apache.http.NameValuePair;
@@ -41,7 +42,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
     } // end of setUp() method definition
 
     public void testVersionsMatch() {
-        assertEquals(BuildConfig.MIXPANEL_VERSION, AConfig.VERSION);
+        assertEquals(BuildConfig.ALOOMA_VERSION, AConfig.VERSION);
     }
 
     public void testGeneratedDistinctId() {
