@@ -21,7 +21,7 @@ public class TestUtils {
 
     public static class CleanAloomaAPI extends AloomaAPI {
         public CleanAloomaAPI(final Context context, final Future<SharedPreferences> referrerPreferences, final String token) {
-            super(context, referrerPreferences, token);
+            super(context, referrerPreferences, token, "", false);
         }
 
         @Override

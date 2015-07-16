@@ -38,14 +38,39 @@ import java.util.Map;
 
     private String mAloomaHost;
 
+    public void forceSSL(boolean mForceSSL) {
+        mSchema = mForceSSL? "https" : "http";
+    }
+
+    private String mSchema;
+
+    /**
+     * Do not call directly. You should call AnalyticsMessages.getInstance()
+     */
+    /* package */ AnalyticsMessages(final Context context) {
+        this(context, "alooma.alooma.io")
+    }
+
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
     /* package */ AnalyticsMessages(final Context context, String aloomaHost) {
+        this(context, aloomaHost, false);
+    }
+
+    /**
+     * Do not call directly. You should call AnalyticsMessages.getInstance()
+     */
+    /* package */ AnalyticsMessages(final Context context, String aloomaHost, boolean forceSSL) {
         mContext = context;
         mAloomaHost = aloomaHost;
+        forceSSL(forceSSL);
         mConfig = getConfig(context);
         mWorker = new Worker();
+    }
+
+    public static AnalyticsMessages getInstance(final Context messageContext) {
+        return getInstance(messageContext, "alooma.alooma.io");
     }
 
     /**
@@ -56,11 +81,18 @@ import java.util.Map;
      *     associated with these messages.
      */
     public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost) {
+        return getInstance(messageContext, aloomaHost, false);
+    }
+
+    /**
+     * Returns an AnalyticsMessages instance with configurable forceSSL attribute
+     */
+    public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost, boolean forceSSL) {
         synchronized (sInstances) {
             final Context appContext = messageContext.getApplicationContext();
             AnalyticsMessages ret;
             if (! sInstances.containsKey(appContext)) {
-                ret = new AnalyticsMessages(appContext, aloomaHost);
+                ret = new AnalyticsMessages(appContext, aloomaHost, forceSSL);
                 sInstances.put(appContext, ret);
             }
             else {
@@ -169,7 +201,7 @@ import java.util.Map;
         }
     }
 
-    private void logAboutMessageToMixpanel(String message, Throwable e) {
+    private void logAboutMessageToAlooma(String message, Throwable e) {
         if (AConfig.DEBUG) {
             Log.v(LOGTAG, message + " (Thread " + Thread.currentThread().getId() + ")", e);
         }
@@ -273,7 +305,7 @@ import java.util.Map;
                             Looper.myLooper().quit();
                         }
                     } else {
-                        Log.e(LOGTAG, "Unexpected message received by Mixpanel worker: " + msg);
+                        Log.e(LOGTAG, "Unexpected message received by Alooma worker: " + msg);
                     }
 
                     ///////////////////////////
@@ -301,7 +333,7 @@ import java.util.Map;
                         mHandler = null;
                         try {
                             Looper.myLooper().quit();
-                            Log.e(LOGTAG, "Mixpanel will not process any more analytics messages", e);
+                            Log.e(LOGTAG, "Alooma will not process any more analytics messages", e);
                         } catch (final Exception tooLate) {
                             Log.e(LOGTAG, "Could not halt looper", tooLate);
                         }
@@ -361,7 +393,7 @@ import java.util.Map;
                 }
 
                 logAboutMessageToAlooma("Sending records to alooma");
-                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ "http://" + mAloomaHost + "/track?ip=1"});
+                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://" + mAloomaHost + "/track?ip=1" });
             }
 
             private void sendData(ADbAdapter dbAdapter, ADbAdapter.Table table, String[] urls) {
@@ -406,7 +438,7 @@ import java.util.Map;
                             Log.e(LOGTAG, "Cannot interpret " + url + " as a URL.", e);
                             break;
                         } catch (final IOException e) {
-                            logAboutMessageToMixpanel("Cannot post message to " + url + ".", e);
+                            logAboutMessageToAlooma("Cannot post message to " + url + ".", e);
                             deleteEvents = false;
                         }
                     }
