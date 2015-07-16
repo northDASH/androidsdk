@@ -48,10 +48,7 @@ import java.util.Map;
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
     /* package */ AnalyticsMessages(final Context context) {
-        mContext = context;
-        mAloomaHost = "";
-        mConfig = getConfig(context);
-        mWorker = new Worker();
+        this(context, "alooma.alooma.io")
     }
 
     /**
