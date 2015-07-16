@@ -46,7 +46,7 @@ public class aloomaTest extends Activity {
 
 
     public void getAPI(View view) {
-        api = AloomaAPI.getInstance(this, target);
+        api = AloomaAPI.getInstance(this, "a", target, true);
     }
 
     public void sendEvent(View view) {
