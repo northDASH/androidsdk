@@ -1,4 +1,4 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -7,19 +7,20 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.3'
     }
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 24
+    buildToolsVersion '21.1.2'
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         // If you change minSdkVersion or targetSdkVersion below, you must also change
         // the relevant attributes of the <uses-sdk> tag in AndroidManifest.xml
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 24
 
         lintOptions {
             abortOnError false
@@ -32,7 +33,7 @@ android {
 // pom! If you need a transitive dependency in the library, you'll
 // have to change the bit in uploadArchives that marks all dependencies as optional.
 dependencies {
-    compile "com.google.android.gms:play-services:[3.1,)"
+    compile 'com.google.android.gms:play-services:9.4.0'
 }
 
 android.libraryVariants.all { variant ->
