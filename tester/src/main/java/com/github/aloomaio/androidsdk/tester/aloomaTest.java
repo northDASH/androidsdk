@@ -1,6 +1,8 @@
 package com.github.aloomaio.androidsdk.tester;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,11 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import com.github.aloomaio.androidsdk.aloomametrics.AloomaAPI;
 
-public class aloomaTest extends Activity {
+public class AloomaTest extends Activity {
 
-    String target = "";
     AloomaAPI api = null;
-    //MixpanelAPI mpapi = null;
+    String token = null;
     int sendIndex = 0, batchIndex = 0;
 
     @Override
@@ -46,18 +47,36 @@ public class aloomaTest extends Activity {
 
 
     public void getAPI(View view) {
-        api = AloomaAPI.getInstance(this, "a", target, true);
+        if (null != token) {
+            api = AloomaAPI.getInstance(this, token, true);
+        } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(AloomaTest.this).create();
+            alertDialog.setTitle("SDK Not initialized");
+            alertDialog.setMessage("To initialize an SDK, you must set the token first");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
     public void sendEvent(View view) {
         String message = "Test message " + Integer.toString(sendIndex);
+
+        // If part of batch, add batch number
         if (null == view) {
             message = "Batch " + Integer.toString(batchIndex) + ":" + message;
         }
         api.track(message, null);
-        //mpapi.track(message + " mixpanel", null);
         sendIndex++;
-        api.flush();
+
+        // Flush on each send only when not part of a batch
+        if (null != view) {
+            api.flush();
+        }
     }
 
     public void sendMany(View view) {
@@ -66,15 +85,12 @@ public class aloomaTest extends Activity {
         for (int i = 0 ; i < messageCount ; i++) {
             sendEvent(null);
         }
+        api.flush();
         batchIndex++;
     }
 
-    public void setTarget(View view) {
-        EditText targetPicker = (EditText) findViewById(R.id.machineNamePicker);
-        String target = targetPicker.getText().toString();
-        this.target = target;
-        if (api != null) {
-            api.setmAloomaHost(target);
-        }
+    public void setToken(View view) {
+        EditText tokenPicker = (EditText) findViewById(R.id.tokenPicker);
+        this.token = tokenPicker.getText().toString();
     }
 }
