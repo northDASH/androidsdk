@@ -13,7 +13,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.github.aloomaio.androidsdk.util.Base64Coder;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -48,51 +47,32 @@ import java.util.Map;
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
     /* package */ AnalyticsMessages(final Context context) {
-        this(context, "alooma.alooma.io")
+        this(context, false);
     }
 
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
-    /* package */ AnalyticsMessages(final Context context, String aloomaHost) {
-        this(context, aloomaHost, false);
-    }
-
-    /**
-     * Do not call directly. You should call AnalyticsMessages.getInstance()
-     */
-    /* package */ AnalyticsMessages(final Context context, String aloomaHost, boolean forceSSL) {
+    /* package */ AnalyticsMessages(final Context context, boolean forceSSL) {
         mContext = context;
-        mAloomaHost = aloomaHost;
         forceSSL(forceSSL);
         mConfig = getConfig(context);
         mWorker = new Worker();
     }
 
     public static AnalyticsMessages getInstance(final Context messageContext) {
-        return getInstance(messageContext, "alooma.alooma.io");
-    }
-
-    /**
-     * Use this to get an instance of AnalyticsMessages instead of creating one directly
-     * for yourself.
-     *
-     * @param messageContext should be the Main Activity of the application
-     *     associated with these messages.
-     */
-    public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost) {
-        return getInstance(messageContext, aloomaHost, false);
+        return getInstance(messageContext, true);
     }
 
     /**
      * Returns an AnalyticsMessages instance with configurable forceSSL attribute
      */
-    public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost, boolean forceSSL) {
+    public static AnalyticsMessages getInstance(final Context messageContext, boolean forceSSL) {
         synchronized (sInstances) {
             final Context appContext = messageContext.getApplicationContext();
             AnalyticsMessages ret;
             if (! sInstances.containsKey(appContext)) {
-                ret = new AnalyticsMessages(appContext, aloomaHost, forceSSL);
+                ret = new AnalyticsMessages(appContext, forceSSL);
                 sInstances.put(appContext, ret);
             }
             else {
@@ -393,7 +373,7 @@ import java.util.Map;
                 }
 
                 logAboutMessageToAlooma("Sending records to alooma");
-                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://" + mAloomaHost + "/track?ip=1" });
+                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://inputs-dev.alooma.com/track?ip=1" });
             }
 
             private void sendData(ADbAdapter dbAdapter, ADbAdapter.Table table, String[] urls) {
@@ -548,10 +528,7 @@ import java.util.Map;
                     }
                 }
                 eventObj.put("event", eventDescription.getEventName());
-                for (final Iterator<?> iter = sendProperties.keys(); iter.hasNext();) {
-                    String key = (String) iter.next();
-                    eventObj.put(key, sendProperties.get(key));
-                }
+                eventObj.put("properties", sendProperties);
                 return eventObj;
             }
 
@@ -584,10 +561,6 @@ import java.util.Map;
         private long mAveFlushFrequency = 0;
         private long mLastFlushTime = -1;
         private SystemInformation mSystemInformation;
-    }
-
-    public void setmAloomaHost(String mAloomaHost) {
-        this.mAloomaHost = mAloomaHost;
     }
 
     /////////////////////////////////////////////////////////

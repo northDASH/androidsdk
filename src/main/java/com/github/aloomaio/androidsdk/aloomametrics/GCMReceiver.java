@@ -201,10 +201,8 @@ public class GCMReceiver extends BroadcastReceiver {
         final Notification notification;
         if (Build.VERSION.SDK_INT >= 16) {
             notification = makeNotificationSDK16OrHigher(context, contentIntent, notificationData);
-        } else if (Build.VERSION.SDK_INT >= 11) {
-            notification = makeNotificationSDK11OrHigher(context, contentIntent, notificationData);
         } else {
-            notification = makeNotificationSDKLessThan11(context, contentIntent, notificationData);
+            notification = makeNotificationSDK11OrHigher(context, contentIntent, notificationData);
         }
 
         return notification;
@@ -248,15 +246,6 @@ public class GCMReceiver extends BroadcastReceiver {
             final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @TargetApi(9)
-    private Notification makeNotificationSDKLessThan11(Context context, PendingIntent intent, NotificationData notificationData) {
-        final Notification n = new Notification(notificationData.icon, notificationData.message, System.currentTimeMillis());
-        n.flags |= Notification.FLAG_AUTO_CANCEL;
-        n.setLatestEventInfo(context, notificationData.title, notificationData.message, intent);
-        return n;
     }
 
     @SuppressWarnings("deprecation")
