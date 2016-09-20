@@ -373,7 +373,7 @@ import java.util.Map;
                 }
 
                 logAboutMessageToAlooma("Sending records to alooma");
-                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://inputs-dev.alooma.com/track?ip=1" });
+                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://inputs.alooma.com/track?ip=1" });
             }
 
             private void sendData(ADbAdapter dbAdapter, ADbAdapter.Table table, String[] urls) {
