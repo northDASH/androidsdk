@@ -15,6 +15,38 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"/>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:inputType="textUri"
+            android:id="@+id/hostPicker"
+            android:hint="@string/your_token"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"
+            android:text="@string/inputs_alooma_com" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/set_host"
+            android:id="@+id/setHost"
+            android:onClick="setAloomaHost"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -23,7 +55,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="55dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="2dp"
         android:layout_gravity="center_horizontal">
 
         <EditText
@@ -42,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/set_token"
-            android:id="@+id/setTarget"
+            android:id="@+id/setToken"
             android:onClick="setToken"
             android:layout_weight="1" />
 

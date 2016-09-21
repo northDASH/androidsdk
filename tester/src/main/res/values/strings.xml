@@ -9,4 +9,6 @@
     <string name="send_1_event">Send 1 event</string>
     <string name="number_of_events_to_send">Number of events to send</string>
     <string name="send_n_events">Send N Events</string>
+    <string name="inputs_alooma_com">inputs.alooma.com</string>
+    <string name="set_host">Set host</string>
 </resources>
