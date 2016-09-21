@@ -47,32 +47,40 @@ import java.util.Map;
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
     /* package */ AnalyticsMessages(final Context context) {
-        this(context, false);
+        this(context, null, false);
     }
 
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
-    /* package */ AnalyticsMessages(final Context context, boolean forceSSL) {
+    /* package */ AnalyticsMessages(final Context context, String aloomaHost, boolean forceSSL) {
         mContext = context;
+        mAloomaHost = (null == aloomaHost) ? DEFAULT_ALOOMA_HOST : aloomaHost;
         forceSSL(forceSSL);
         mConfig = getConfig(context);
         mWorker = new Worker();
     }
 
     public static AnalyticsMessages getInstance(final Context messageContext) {
-        return getInstance(messageContext, true);
+        return getInstance(messageContext, null, true);
+    }
+
+    public static AnalyticsMessages getInstance(final Context messageContext,
+                                                String aloomaHost) {
+        return getInstance(messageContext, aloomaHost, true);
     }
 
     /**
      * Returns an AnalyticsMessages instance with configurable forceSSL attribute
      */
-    public static AnalyticsMessages getInstance(final Context messageContext, boolean forceSSL) {
+    public static AnalyticsMessages getInstance(final Context messageContext,
+                                                String aloomaHost,
+                                                boolean forceSSL) {
         synchronized (sInstances) {
             final Context appContext = messageContext.getApplicationContext();
             AnalyticsMessages ret;
             if (! sInstances.containsKey(appContext)) {
-                ret = new AnalyticsMessages(appContext, forceSSL);
+                ret = new AnalyticsMessages(appContext, aloomaHost, forceSSL);
                 sInstances.put(appContext, ret);
             }
             else {
@@ -373,7 +381,7 @@ import java.util.Map;
                 }
 
                 logAboutMessageToAlooma("Sending records to alooma");
-                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://inputs.alooma.com/track?ip=1" });
+                sendData(dbAdapter, ADbAdapter.Table.EVENTS, new String[]{ mSchema + "://" + mAloomaHost + "/track?ip=1" });
             }
 
             private void sendData(ADbAdapter dbAdapter, ADbAdapter.Table table, String[] urls) {
@@ -581,5 +589,6 @@ import java.util.Map;
     private static final String LOGTAG = "AloomaAPI.AnalyticsMessages";
 
     private static final Map<Context, AnalyticsMessages> sInstances = new HashMap<Context, AnalyticsMessages>();
+    private final String DEFAULT_ALOOMA_HOST = "inputs.alooma.com";
 
 }

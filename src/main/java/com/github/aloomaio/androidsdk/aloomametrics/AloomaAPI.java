@@ -49,7 +49,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Core class for interacting with Mixpanel Analytics.
  *
- * <p>Call {@link #getInstance(Context, String, boolean)} with
+ * <p>Call {@link #getInstance(Context, String, String, boolean)} with
  * your main application activity and your Mixpanel API token as arguments
  * an to get an instance you can use to report how users are using your
  * application.
@@ -116,19 +116,20 @@ public class AloomaAPI {
     public static final String VERSION = AConfig.VERSION;
 
     AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token) {
-        this(context, referrerPreferences, token, false);
+        this(context, referrerPreferences, token, null, false);
     }
 
     /**
      * You shouldn't instantiate AloomaAPI objects directly.
-     * Use {@link #getInstance(Context, String, boolean)} to get an instance.
+     * Use {@link #getInstance(Context, String, String, boolean)} to get an instance.
      */
-    AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token, boolean forceSSL) {
+    AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token,
+              String aloomaHost, boolean forceSSL) {
         mContext = context;
         mToken = token;
         mEventTimings = new HashMap<String, Long>();
         mPeople = new PeopleImpl();
-        mMessages = getAnalyticsMessages(forceSSL);
+        mMessages = getAnalyticsMessages(aloomaHost, forceSSL);
         mConfig = getConfig();
 
         final Map<String, String> deviceInfo = new HashMap<String, String>();
@@ -193,7 +194,15 @@ public class AloomaAPI {
      * @return an instance of AloomaAPI associated with your project
      */
     public static AloomaAPI getInstance(Context context, String token) {
-        return getInstance(context, token, true);
+        return getInstance(context, token, null, true);
+    }
+
+    public static AloomaAPI getInstance(Context context, String token, boolean forceSSL) {
+        return getInstance(context, token, null, forceSSL);
+    }
+
+    public static AloomaAPI getInstance(Context context, String aloomaHost, String token) {
+        return getInstance(context, token, aloomaHost, true);
     }
 
     /**
@@ -221,7 +230,8 @@ public class AloomaAPI {
      * @param token   The token supplied by Alooma via the input creation UI
      * @return an instance of AloomaAPI associated with your project
      */
-    public static AloomaAPI getInstance(Context context, String token, boolean forceSSL) {
+    public static AloomaAPI getInstance(Context context, String token, String aloomaHost,
+                                        boolean forceSSL) {
         if (null == context | null == token) {
             return null;
         }
@@ -240,7 +250,7 @@ public class AloomaAPI {
 
             AloomaAPI instance = instances.get(appContext);
             if (null == instance && ConfigurationChecker.checkBasicConfiguration(appContext)) {
-                instance = new AloomaAPI(appContext, sReferrerPrefs, token, forceSSL);
+                instance = new AloomaAPI(appContext, sReferrerPrefs, token, aloomaHost, forceSSL);
                 registerAppLinksListeners(context, instance);
                 instances.put(appContext, instance);
             }
@@ -1082,10 +1092,10 @@ public class AloomaAPI {
     // non-test client code.
 
     /* package */ AnalyticsMessages getAnalyticsMessages() {
-        return AnalyticsMessages.getInstance(mContext, true);
+        return AnalyticsMessages.getInstance(mContext, null, true);
     }
-    /* package */ AnalyticsMessages getAnalyticsMessages(boolean forceSSL) {
-        return AnalyticsMessages.getInstance(mContext, forceSSL);
+    /* package */ AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
+        return AnalyticsMessages.getInstance(mContext, aloomaHost, forceSSL);
     }
 
     /* package */ AConfig getConfig() {
