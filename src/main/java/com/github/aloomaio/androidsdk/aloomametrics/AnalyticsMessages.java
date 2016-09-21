@@ -528,15 +528,29 @@ import java.util.Map;
                 final JSONObject eventObj = new JSONObject();
                 final JSONObject eventProperties = eventDescription.getProperties();
                 final JSONObject sendProperties = getDefaultEventProperties();
-                sendProperties.put("token", eventDescription.getToken());
+
                 if (eventProperties != null) {
                     for (final Iterator<?> iter = eventProperties.keys(); iter.hasNext();) {
                         final String key = (String) iter.next();
                         sendProperties.put(key, eventProperties.get(key));
                     }
                 }
+
+                String token = "no token";
+                try {
+                    token = sendProperties.getString("token");
+                    sendProperties.remove("token");
+                } catch (JSONException ignored) { }
+                JSONObject props = new JSONObject();
+                props.put("token", token);
+
+                for (final Iterator<?> iter = sendProperties.keys(); iter.hasNext();) {
+                    final String key = (String) iter.next();
+                    eventObj.put(key, sendProperties.get(key));
+                }
+
                 eventObj.put("event", eventDescription.getEventName());
-                eventObj.put("properties", sendProperties);
+                eventObj.put("properties", props);
                 return eventObj;
             }
 

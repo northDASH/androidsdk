@@ -413,6 +413,7 @@ public class AloomaAPI {
             final long timeSeconds = (long) timeSecondsDouble;
             messageProps.put("time", timeSeconds);
             messageProps.put("distinct_id", getDistinctId());
+            messageProps.put("token", mToken);
 
             if (null != eventBegin) {
                 final double eventBeginDouble = ((double) eventBegin) / 1000.0;
