@@ -64,7 +64,7 @@ public class AloomaTest extends Activity {
                     });
             alertDialog.show();
         } else {
-            api = AloomaAPI.getInstance(this, token, true);
+            api = AloomaAPI.getInstance(this, token, host, true);
         }
     }
 
