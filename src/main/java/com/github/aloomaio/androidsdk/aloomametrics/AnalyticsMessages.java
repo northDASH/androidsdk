@@ -9,10 +9,10 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.github.aloomaio.androidsdk.util.Base64Coder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.github.aloomaio.androidsdk.util.Base64Coder;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -35,13 +35,9 @@ import java.util.Map;
  */
 /* package */ class AnalyticsMessages {
 
-    private String mAloomaHost;
-
     public void forceSSL(boolean mForceSSL) {
         mSchema = mForceSSL? "https" : "http";
     }
-
-    private String mSchema;
 
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
@@ -65,8 +61,7 @@ import java.util.Map;
         return getInstance(messageContext, null, true);
     }
 
-    public static AnalyticsMessages getInstance(final Context messageContext,
-                                                String aloomaHost) {
+    public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost) {
         return getInstance(messageContext, aloomaHost, true);
     }
 
@@ -281,10 +276,6 @@ import java.util.Map;
                         mDecideChecker.addDecideCheck(check);
                         mDecideChecker.runDecideChecks(getPoster());
                     }
-                    else if (msg.what == REGISTER_FOR_GCM) {
-                        final String senderId = (String) msg.obj;
-                        runGCMRegistration(senderId);
-                    }
                     else if (msg.what == KILL_WORKER) {
                         Log.w(LOGTAG, "Worker received a hard kill. Dumping all events and force-killing. Thread id " + Thread.currentThread().getId());
                         synchronized(mHandlerLock) {
@@ -328,50 +319,6 @@ import java.util.Map;
                     }
                 }
             }// handleMessage
-
-            private void runGCMRegistration(String senderID) {
-                final String registrationId;
-                try {
-                    // We don't actually require Google Play Services to be available
-                    // (since we can't specify what version customers will be using,
-                    // and because the latest Google Play Services actually have
-                    // dependencies on Java 7)
-
-                    // Consider adding a transitive dependency on the latest
-                    // Google Play Services version and requiring Java 1.7
-                    // in the next major library release.
-                    try {
-                        final int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
-                        if (resultCode != ConnectionResult.SUCCESS) {
-                            Log.i(LOGTAG, "Can't register for push notifications, Google Play Services are not installed.");
-                            return;
-                        }
-                    } catch (RuntimeException e) {
-                        Log.i(LOGTAG, "Can't register for push notifications, Google Play services are not configured.");
-                        return;
-                    }
-
-
-                    final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mContext);
-                    registrationId = gcm.register(senderID);
-                } catch (IOException e) {
-                    Log.i(LOGTAG, "Exception when trying to register for GCM", e);
-                    return;
-                } catch (NoClassDefFoundError e) {
-                    Log.w(LOGTAG, "Google play services were not part of this build, push notifications cannot be registered or delivered");
-                    return;
-                }
-
-                AloomaAPI.allInstances(new AloomaAPI.InstanceProcessor() {
-                    @Override
-                    public void process(AloomaAPI api) {
-                        if (AConfig.DEBUG) {
-                            Log.v(LOGTAG, "Using existing pushId " + registrationId);
-                        }
-                        api.getPeople().setPushRegistrationId(registrationId);
-                    }
-                });
-            }
 
             private void sendAllData(ADbAdapter dbAdapter) {
                 final ServerMessage poster = getPoster();
@@ -536,13 +483,13 @@ import java.util.Map;
                     }
                 }
 
-                String token = "no token";
+                JSONObject props;
                 try {
-                    token = sendProperties.getString("token");
-                    sendProperties.remove("token");
-                } catch (JSONException ignored) { }
-                JSONObject props = new JSONObject();
-                props.put("token", token);
+                    props = eventObj.getJSONObject("properties");
+                } catch (JSONException ex) {
+                    props = new JSONObject();
+                }
+                props.put("token", eventDescription.getToken());
 
                 for (final Iterator<?> iter = sendProperties.keys(); iter.hasNext();) {
                     final String key = (String) iter.next();
@@ -591,6 +538,8 @@ import java.util.Map;
     private final Worker mWorker;
     private final Context mContext;
     private final AConfig mConfig;
+    private final String mAloomaHost;
+    private String mSchema;
 
     // Messages for our thread
     private static int ENQUEUE_PEOPLE = 0; // submit events and people data
