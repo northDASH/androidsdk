@@ -13,8 +13,6 @@ import com.github.aloomaio.androidsdk.aloomametrics.AloomaAPI;
 public class AloomaTest extends Activity {
 
     AloomaAPI api = null;
-    String token = null;
-    String host = null;
     int sendIndex = 0, batchIndex = 0;
 
     @Override
@@ -46,11 +44,21 @@ public class AloomaTest extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public String getToken() {
+        EditText tokenPicker = (EditText) findViewById(R.id.tokenPicker);
+        return tokenPicker.getText().toString();
+    }
+
+    public String getHost() {
+        EditText hostPicker = (EditText) findViewById(R.id.hostPicker);
+        return hostPicker.getText().toString();
+    }
 
     public void getAPI(View view) {
-        setToken(null);
-        setAloomaHost(null);
-        if ((null == host || host.isEmpty()) || (null == token || token.isEmpty())) {
+        String token = getToken();
+        String host = getHost();
+
+        if ((host.isEmpty()) || token.isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(AloomaTest.this).create();
             alertDialog.setTitle("SDK Not initialized");
             String message = String.format("To initialize an SDK, you must set the token and the " +
@@ -92,15 +100,5 @@ public class AloomaTest extends Activity {
         }
         api.flush();
         batchIndex++;
-    }
-
-    public void setToken(View view) {
-        EditText tokenPicker = (EditText) findViewById(R.id.tokenPicker);
-        this.token = tokenPicker.getText().toString();
-    }
-
-    public void setAloomaHost(View view) {
-        EditText hostPicker = (EditText) findViewById(R.id.hostPicker);
-        this.host = hostPicker.getText().toString();
     }
 }
