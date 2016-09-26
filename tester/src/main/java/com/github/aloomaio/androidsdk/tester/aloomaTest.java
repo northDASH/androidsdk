@@ -74,6 +74,19 @@ public class AloomaTest extends Activity {
         } else {
             api = AloomaAPI.getInstance(this, token, host, true);
         }
+        if (null == api) {
+            AlertDialog alertDialog = new AlertDialog.Builder(AloomaTest.this).create();
+            alertDialog.setTitle("SDK Not initialized");
+            String message = "SDK constructor returned null";
+            alertDialog.setMessage(message);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
     public void sendEvent(View view) {

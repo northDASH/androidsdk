@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Base64;
 
 import com.github.aloomaio.androidsdk.surveys.SurveyActivity;
 import com.github.aloomaio.androidsdk.util.ActivityImageUtils;
@@ -124,12 +125,13 @@ public class AloomaAPI {
      */
     AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token,
               String aloomaHost, boolean forceSSL) {
-        mContext = context;
         mToken = token;
+        mContext = context;
         mEventTimings = new HashMap<String, Long>();
         mPeople = new PeopleImpl();
         mMessages = getAnalyticsMessages(aloomaHost, forceSSL);
         mConfig = getConfig();
+
 
         final Map<String, String> deviceInfo = new HashMap<String, String>();
         deviceInfo.put("$android_lib_version", AConfig.VERSION);
@@ -231,9 +233,10 @@ public class AloomaAPI {
      */
     public static AloomaAPI getInstance(Context context, String token, String aloomaHost,
                                         boolean forceSSL) {
-        if (null == context | null == token) {
+        if (null == context | null == token || !validateToken(token)) {
             return null;
         }
+
         synchronized (sInstanceMap) {
             final Context appContext = context.getApplicationContext();
 
@@ -365,6 +368,17 @@ public class AloomaAPI {
         synchronized (mEventTimings) {
             mEventTimings.put(eventName, writeTime);
         }
+    }
+
+    private static boolean validateToken(String token) {
+        try {
+            String tokenData = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+            String decoded = new String(Base64.decode(tokenData, 0));
+            new JSONObject(decoded);
+        } catch (StringIndexOutOfBoundsException|JSONException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
