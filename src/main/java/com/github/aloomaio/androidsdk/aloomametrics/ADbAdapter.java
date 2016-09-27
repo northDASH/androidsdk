@@ -40,7 +40,7 @@ import android.util.Log;
     }
 
     private static final String DATABASE_NAME = "alooma";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public static final String KEY_DATA = "data";
     public static final String KEY_CREATED_AT = "created_at";

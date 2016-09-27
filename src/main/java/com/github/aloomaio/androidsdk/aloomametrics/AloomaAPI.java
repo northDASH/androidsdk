@@ -16,13 +16,13 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Base64;
 
-import com.github.aloomaio.androidsdk.R;
-import com.github.aloomaio.androidsdk.viewcrawler.UpdatesFromMixpanel;
-import com.github.aloomaio.androidsdk.viewcrawler.TrackingDebug;
-import com.github.aloomaio.androidsdk.viewcrawler.ViewCrawler;
 import com.github.aloomaio.androidsdk.surveys.SurveyActivity;
 import com.github.aloomaio.androidsdk.util.ActivityImageUtils;
+import com.github.aloomaio.androidsdk.viewcrawler.TrackingDebug;
+import com.github.aloomaio.androidsdk.viewcrawler.UpdatesFromMixpanel;
+import com.github.aloomaio.androidsdk.viewcrawler.ViewCrawler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +47,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Core class for interacting with Mixpanel Analytics.
+ * Core class for interacting with Alooma Analytics.
  *
  * <p>Call {@link #getInstance(Context, String, String, boolean)} with
  * your main application activity and your Mixpanel API token as arguments
@@ -73,22 +73,22 @@ import java.util.concurrent.locks.ReentrantLock;
  * <pre>
  * {@code
  * public class MainActivity extends Activity {
- *      AloomaAPI mMixpanel;
+ *      AloomaAPI mAlooma;
  *
  *      public void onCreate(Bundle saved) {
- *          mMixpanel = AloomaAPI.getInstance(this, "YOUR MIXPANEL API TOKEN");
+ *          mAlooma = AloomaAPI.getInstance(this, "YOUR ALOOMA API TOKEN");
  *          ...
  *      }
  *
  *      public void whenSomethingInterestingHappens(int flavor) {
  *          JSONObject properties = new JSONObject();
  *          properties.put("flavor", flavor);
- *          mMixpanel.track("Something Interesting Happened", properties);
+ *          mAlooma.track("Something Interesting Happened", properties);
  *          ...
  *      }
  *
  *      public void onDestroy() {
- *          mMixpanel.flush();
+ *          mAlooma.flush();
  *          super.onDestroy();
  *      }
  * }
@@ -96,7 +96,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * </pre>
  *
  * <p>In addition to this documentation, you may wish to take a look at
- * <a href="https://github.com/alooma/sample-android-alooma-integration">the Mixpanel sample Android application</a>.
+ * <a href="https://github.com/alooma/sample-android-alooma-integration">the Alooma sample Android application</a>.
  * It demonstrates a variety of techniques, including
  * updating People Analytics records with {@link People} and registering for
  * and receiving push notifications with {@link People#initPushHandling(String)}.
@@ -107,7 +107,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @see <a href="https://alooma.com/docs/integration-libraries/android">getting started documentation for tracking events</a>
  * @see <a href="https://alooma.com/docs/people-analytics/android">getting started documentation for People Analytics</a>
  * @see <a href="https://alooma.com/docs/people-analytics/android-push">getting started with push notifications for Android</a>
- * @see <a href="https://github.com/alooma/sample-android-alooma-integration">The Mixpanel Android sample application</a>
+ * @see <a href="https://github.com/alooma/sample-android-alooma-integration">The Alooma Android sample application</a>
  */
 public class AloomaAPI {
     /**
@@ -116,22 +116,22 @@ public class AloomaAPI {
     public static final String VERSION = AConfig.VERSION;
 
     AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token) {
-        this(context, referrerPreferences, token, "alooma.alooma.io", false);
+        this(context, referrerPreferences, token, null, false);
     }
 
     /**
      * You shouldn't instantiate AloomaAPI objects directly.
      * Use {@link #getInstance(Context, String, String, boolean)} to get an instance.
      */
-    AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token, String aloomaHost, boolean forceSSL) {
-        mContext = context;
+    AloomaAPI(Context context, Future<SharedPreferences> referrerPreferences, String token,
+              String aloomaHost, boolean forceSSL) {
         mToken = token;
-        mAloomaHost = aloomaHost;
-        mForceSSL = forceSSL;
+        mContext = context;
         mEventTimings = new HashMap<String, Long>();
         mPeople = new PeopleImpl();
-        mMessages = getAnalyticsMessages(forceSSL);
+        mMessages = getAnalyticsMessages(aloomaHost, forceSSL);
         mConfig = getConfig();
+
 
         final Map<String, String> deviceInfo = new HashMap<String, String>();
         deviceInfo.put("$android_lib_version", AConfig.VERSION);
@@ -191,18 +191,27 @@ public class AloomaAPI {
      * </pre>
      *
      * @param context The application context you are tracking
+     * @param token   The token supplied by Alooma via the input creation UI
      * @return an instance of AloomaAPI associated with your project
      */
-    public static AloomaAPI getInstance(Context context, String aloomaHost) {
-        return getInstance(context, "alooma", aloomaHost, false);
+    public static AloomaAPI getInstance(Context context, String token) {
+        return getInstance(context, token, null, true);
+    }
+
+    public static AloomaAPI getInstance(Context context, String token, boolean forceSSL) {
+        return getInstance(context, token, null, forceSSL);
+    }
+
+    public static AloomaAPI getInstance(Context context, String aloomaHost, String token) {
+        return getInstance(context, token, aloomaHost, true);
     }
 
     /**
-     * Get the instance of AloomaAPI associated with your Mixpanel project token.
+     * Get the instance of AloomaAPI associated with your Alooma project token.
      *
      * <p>Use getInstance to get a reference to a shared
      * instance of AloomaAPI you can use to send events
-     * and People Analytics updates to Mixpanel.</p>
+     * and People Analytics updates to Alooma.</p>
      * <p>getInstance is thread safe, but the returned instance is not,
      * and may be shared with other callers of getInstance.
      * The best practice is to call getInstance, and use the returned AloomaAPI,
@@ -219,20 +228,21 @@ public class AloomaAPI {
      * </pre>
      *
      * @param context The application context you are tracking
-     * @param token Your alooma token. You can get your project token on the Mixpanel web site,
-     *     in the settings dialog.
+     * @param token   The token supplied by Alooma via the input creation UI
      * @return an instance of AloomaAPI associated with your project
      */
-    public static AloomaAPI getInstance(Context context, String token, String aloomaHost, boolean forceSSL) {
-        token = "alooma";
-        if (null == context | null == aloomaHost | null == token) {
+    public static AloomaAPI getInstance(Context context, String token, String aloomaHost,
+                                        boolean forceSSL) {
+        if (null == context | null == token || !validateToken(token)) {
             return null;
         }
+
         synchronized (sInstanceMap) {
             final Context appContext = context.getApplicationContext();
 
             if (null == sReferrerPrefs) {
-                sReferrerPrefs = sPrefsLoader.loadPreferences(context, AConfig.REFERRER_PREFS_NAME, null);
+                sReferrerPrefs = sPrefsLoader.loadPreferences(context,
+                        AConfig.REFERRER_PREFS_NAME, null);
             }
 
             Map <Context, AloomaAPI> instances = sInstanceMap.get(token);
@@ -264,7 +274,7 @@ public class AloomaAPI {
         Log.i(
             LOGTAG,
             "AloomaAPI.setFlushInterval is deprecated. Calling is now a no-op.\n" +
-            "    To set a custom Mixpanel flush interval for your application, add\n" +
+            "    To set a custom Alooma flush interval for your application, add\n" +
             "    <meta-data android:name=\"com.alooma.android.AConfig.FlushInterval\" android:value=\"YOUR_INTERVAL\" />\n" +
             "    to the <application> section of your AndroidManifest.xml."
         );
@@ -288,7 +298,7 @@ public class AloomaAPI {
 
     /**
      * This function creates a distinct_id alias from alias to original. If original is null, then it will create an alias
-     * to the current events distinct_id, which may be the distinct_id randomly generated by the Mixpanel library
+     * to the current events distinct_id, which may be the distinct_id randomly generated by the Alooma library
      * before {@link #identify(String)} is called.
      *
      * <p>This call does not identify the user after. You must still call both {@link #identify(String)} and
@@ -360,11 +370,21 @@ public class AloomaAPI {
         }
     }
 
+    private static boolean validateToken(String token) {
+        try {
+            String tokenData = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+            String decoded = new String(Base64.decode(tokenData, 0));
+            new JSONObject(decoded);
+        } catch (StringIndexOutOfBoundsException|JSONException e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Track an event.
      *
-     * <p>Every call to track eventually results in a data point sent to Mixpanel. These data points
-     * are what are measured, counted, and broken down to create your Mixpanel reports. Events
+     * <p>Every call to track eventually results in a data point sent to Alooma. Events
      * have a string name, and an optional set of name/value pairs that describe the properties of
      * that event.
      *
@@ -434,12 +454,12 @@ public class AloomaAPI {
     }
 
     /**
-     * Push all queued Mixpanel events and People Analytics changes to Mixpanel servers.
+     * Push all queued Alooma events and People Analytics changes to Alooma servers.
      *
      * <p>Events and People messages are pushed gradually throughout
      * the lifetime of your application. This means that to ensure that all messages
-     * are sent to Mixpanel when your application is shut down, you will
-     * need to call flush() to let the Mixpanel library know it should
+     * are sent to Alooma when your application is shut down, you will
+     * need to call flush() to let the Alooma library know it should
      * send all remaining messages to the server. We strongly recommend
      * placing a call to flush() in the onDestroy() method of
      * your main application activity.
@@ -451,7 +471,7 @@ public class AloomaAPI {
     /**
      * Returns a json object of the user's current super properties
      *
-     *<p>SuperProperties are a collection of properties that will be sent with every event to Mixpanel,
+     *<p>SuperProperties are a collection of properties that will be sent with every event to Alooma,
      * and persist beyond the lifetime of your application.
      */
       public JSONObject getSuperProperties() {
@@ -1084,11 +1104,8 @@ public class AloomaAPI {
     // Conveniences for testing. These methods should not be called by
     // non-test client code.
 
-    /* package */ AnalyticsMessages getAnalyticsMessages() {
-        return AnalyticsMessages.getInstance(mContext, mAloomaHost);
-    }
-    /* package */ AnalyticsMessages getAnalyticsMessages(boolean forceSSL) {
-        return AnalyticsMessages.getInstance(mContext, mAloomaHost, forceSSL);
+    /* package */ AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
+        return AnalyticsMessages.getInstance(mContext, aloomaHost, forceSSL);
     }
 
     /* package */ AConfig getConfig() {
@@ -1483,7 +1500,7 @@ public class AloomaAPI {
             final String distinctId = getDistinctId();
 
             dataObj.put(actionType, properties);
-            dataObj.put("$token", mToken);
+            dataObj.put("token", mToken);
             dataObj.put("$time", System.currentTimeMillis());
 
             if (null != distinctId) {
@@ -1642,7 +1659,6 @@ public class AloomaAPI {
                                     Log.v(LOGTAG, "Attempting to show mini notification.");
                                 }
                                 final FragmentTransaction transaction = parent.getFragmentManager().beginTransaction();
-                                transaction.setCustomAnimations(0, R.anim.com_mixpanel_android_slide_down);
                                 transaction.add(android.R.id.content, inapp);
                                 transaction.commit();
                             }
@@ -1844,15 +1860,6 @@ public class AloomaAPI {
     private final AnalyticsMessages mMessages;
     private final AConfig mConfig;
 
-    public void setmAloomaHost(String mAloomaHost) {
-        this.mAloomaHost = mAloomaHost;
-        if (mMessages != null) {
-            mMessages.setmAloomaHost(mAloomaHost);
-        }
-    }
-
-    private String mAloomaHost;
-    private boolean mForceSSL;
     private final String mToken;
     private final PeopleImpl mPeople;
     private final UpdatesFromMixpanel mUpdatesFromMixpanel;

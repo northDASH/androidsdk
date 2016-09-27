@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".aloomaTest"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".AloomaTest"
     android:orientation="vertical"
     android:id="@+id/activityLayout">
 
@@ -15,14 +15,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"/>
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal">
 
@@ -31,40 +30,53 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:inputType="textUri"
-            android:id="@+id/machineNamePicker"
-            android:hint="Demo server target"
+            android:id="@+id/hostPicker"
+            android:hint="@string/your_token"
             android:gravity="center_horizontal|center_vertical"
             android:layout_gravity="center_vertical"
-            android:textSize="20dp"/>
+            android:textSize="20sp"
+            android:text="@string/inputs_alooma_com" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="55dp"
+        android:layout_marginTop="2dp"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Set Target"
-            android:id="@+id/setTarget"
-            android:onClick="setTarget"
-            android:layout_weight="1" />
+            android:layout_height="fill_parent"
+            android:inputType="textUri"
+            android:id="@+id/tokenPicker"
+            android:hint="@string/your_token"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start alooma SDK"
+        android:text="@string/start_alooma_sdk"
         android:id="@+id/startAPI"
         android:onClick="getAPI"
-        android:layout_below="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send 1 event"
+        android:text="@string/send_1_event"
         android:id="@+id/send1event"
         android:onClick="sendEvent"
         android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal" />
 
     <EditText
@@ -73,17 +85,16 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/messageCount"
-        android:hint="Number of events to send"
+        android:hint="@string/number_of_events_to_send"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send n Events"
+        android:text="@string/send_n_events"
         android:id="@+id/sendManyEvents"
         android:onClick="sendMany"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

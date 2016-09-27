@@ -71,7 +71,7 @@ public class SurveyActivity extends Activity {
             finish();
             return;
         }
-        mMixpanel = AloomaAPI.getInstance(SurveyActivity.this, mUpdateDisplayState.getToken(), "badHostFromSurveyActivity", false);
+        mMixpanel = AloomaAPI.getInstance(SurveyActivity.this, mUpdateDisplayState.getToken(), false);
 
         if (isShowingInApp()) {
             onCreateInAppNotification(savedInstanceState);

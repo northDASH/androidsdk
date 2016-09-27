@@ -9,10 +9,9 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.github.aloomaio.androidsdk.util.Base64Coder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.github.aloomaio.androidsdk.util.Base64Coder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -36,26 +35,15 @@ import java.util.Map;
  */
 /* package */ class AnalyticsMessages {
 
-    private String mAloomaHost;
-
     public void forceSSL(boolean mForceSSL) {
         mSchema = mForceSSL? "https" : "http";
     }
-
-    private String mSchema;
 
     /**
      * Do not call directly. You should call AnalyticsMessages.getInstance()
      */
     /* package */ AnalyticsMessages(final Context context) {
-        this(context, "alooma.alooma.io")
-    }
-
-    /**
-     * Do not call directly. You should call AnalyticsMessages.getInstance()
-     */
-    /* package */ AnalyticsMessages(final Context context, String aloomaHost) {
-        this(context, aloomaHost, false);
+        this(context, null, false);
     }
 
     /**
@@ -63,31 +51,26 @@ import java.util.Map;
      */
     /* package */ AnalyticsMessages(final Context context, String aloomaHost, boolean forceSSL) {
         mContext = context;
-        mAloomaHost = aloomaHost;
+        mAloomaHost = (null == aloomaHost) ? DEFAULT_ALOOMA_HOST : aloomaHost;
         forceSSL(forceSSL);
         mConfig = getConfig(context);
         mWorker = new Worker();
     }
 
     public static AnalyticsMessages getInstance(final Context messageContext) {
-        return getInstance(messageContext, "alooma.alooma.io");
+        return getInstance(messageContext, null, true);
     }
 
-    /**
-     * Use this to get an instance of AnalyticsMessages instead of creating one directly
-     * for yourself.
-     *
-     * @param messageContext should be the Main Activity of the application
-     *     associated with these messages.
-     */
     public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost) {
-        return getInstance(messageContext, aloomaHost, false);
+        return getInstance(messageContext, aloomaHost, true);
     }
 
     /**
      * Returns an AnalyticsMessages instance with configurable forceSSL attribute
      */
-    public static AnalyticsMessages getInstance(final Context messageContext, String aloomaHost, boolean forceSSL) {
+    public static AnalyticsMessages getInstance(final Context messageContext,
+                                                String aloomaHost,
+                                                boolean forceSSL) {
         synchronized (sInstances) {
             final Context appContext = messageContext.getApplicationContext();
             AnalyticsMessages ret;
@@ -293,10 +276,6 @@ import java.util.Map;
                         mDecideChecker.addDecideCheck(check);
                         mDecideChecker.runDecideChecks(getPoster());
                     }
-                    else if (msg.what == REGISTER_FOR_GCM) {
-                        final String senderId = (String) msg.obj;
-                        runGCMRegistration(senderId);
-                    }
                     else if (msg.what == KILL_WORKER) {
                         Log.w(LOGTAG, "Worker received a hard kill. Dumping all events and force-killing. Thread id " + Thread.currentThread().getId());
                         synchronized(mHandlerLock) {
@@ -340,50 +319,6 @@ import java.util.Map;
                     }
                 }
             }// handleMessage
-
-            private void runGCMRegistration(String senderID) {
-                final String registrationId;
-                try {
-                    // We don't actually require Google Play Services to be available
-                    // (since we can't specify what version customers will be using,
-                    // and because the latest Google Play Services actually have
-                    // dependencies on Java 7)
-
-                    // Consider adding a transitive dependency on the latest
-                    // Google Play Services version and requiring Java 1.7
-                    // in the next major library release.
-                    try {
-                        final int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
-                        if (resultCode != ConnectionResult.SUCCESS) {
-                            Log.i(LOGTAG, "Can't register for push notifications, Google Play Services are not installed.");
-                            return;
-                        }
-                    } catch (RuntimeException e) {
-                        Log.i(LOGTAG, "Can't register for push notifications, Google Play services are not configured.");
-                        return;
-                    }
-
-
-                    final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mContext);
-                    registrationId = gcm.register(senderID);
-                } catch (IOException e) {
-                    Log.i(LOGTAG, "Exception when trying to register for GCM", e);
-                    return;
-                } catch (NoClassDefFoundError e) {
-                    Log.w(LOGTAG, "Google play services were not part of this build, push notifications cannot be registered or delivered");
-                    return;
-                }
-
-                AloomaAPI.allInstances(new AloomaAPI.InstanceProcessor() {
-                    @Override
-                    public void process(AloomaAPI api) {
-                        if (AConfig.DEBUG) {
-                            Log.v(LOGTAG, "Using existing pushId " + registrationId);
-                        }
-                        api.getPeople().setPushRegistrationId(registrationId);
-                    }
-                });
-            }
 
             private void sendAllData(ADbAdapter dbAdapter) {
                 final ServerMessage poster = getPoster();
@@ -540,18 +475,29 @@ import java.util.Map;
                 final JSONObject eventObj = new JSONObject();
                 final JSONObject eventProperties = eventDescription.getProperties();
                 final JSONObject sendProperties = getDefaultEventProperties();
-                sendProperties.put("token", eventDescription.getToken());
+
                 if (eventProperties != null) {
                     for (final Iterator<?> iter = eventProperties.keys(); iter.hasNext();) {
                         final String key = (String) iter.next();
                         sendProperties.put(key, eventProperties.get(key));
                     }
                 }
-                eventObj.put("event", eventDescription.getEventName());
+
+                JSONObject props;
+                try {
+                    props = eventObj.getJSONObject("properties");
+                } catch (JSONException ex) {
+                    props = new JSONObject();
+                }
+                props.put("token", eventDescription.getToken());
+
                 for (final Iterator<?> iter = sendProperties.keys(); iter.hasNext();) {
-                    String key = (String) iter.next();
+                    final String key = (String) iter.next();
                     eventObj.put(key, sendProperties.get(key));
                 }
+
+                eventObj.put("event", eventDescription.getEventName());
+                eventObj.put("properties", props);
                 return eventObj;
             }
 
@@ -586,16 +532,14 @@ import java.util.Map;
         private SystemInformation mSystemInformation;
     }
 
-    public void setmAloomaHost(String mAloomaHost) {
-        this.mAloomaHost = mAloomaHost;
-    }
-
     /////////////////////////////////////////////////////////
 
     // Used across thread boundaries
     private final Worker mWorker;
     private final Context mContext;
     private final AConfig mConfig;
+    private final String mAloomaHost;
+    private String mSchema;
 
     // Messages for our thread
     private static int ENQUEUE_PEOPLE = 0; // submit events and people data
@@ -608,5 +552,6 @@ import java.util.Map;
     private static final String LOGTAG = "AloomaAPI.AnalyticsMessages";
 
     private static final Map<Context, AnalyticsMessages> sInstances = new HashMap<Context, AnalyticsMessages>();
+    private final String DEFAULT_ALOOMA_HOST = "inputs.alooma.com";
 
 }
