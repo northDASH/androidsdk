@@ -24,7 +24,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.github.aloomaio.androidsdk:androidsdk:6.0.1-SNAPSHOT'
+    compile 'com.github.aloomaio.androidsdk:androidsdk:6.0.2-SNAPSHOT'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:3.1+'
 }
