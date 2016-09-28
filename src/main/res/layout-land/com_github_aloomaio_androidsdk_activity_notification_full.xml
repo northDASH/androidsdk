@@ -8,11 +8,11 @@
     tools:ignore="InconsistentLayout">
 
     <ImageView
-        android:id="@+id/com_mixpanel_android_notification_gradient"
+        android:id="@+id/com_github_aloomaio_androidsdk_notification_gradient"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="50dp"
-        android:contentDescription="@string/com_mixpanel_android_notification_image" />
+        android:contentDescription="@string/com_github_aloomaio_androidsdk_notification_image" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,14 +28,14 @@
             android:orientation="horizontal">
     
             <com.github.aloomaio.androidsdk.surveys.FadingImageView
-                android:id="@+id/com_mixpanel_android_notification_image"
+                android:id="@+id/com_github_aloomaio_androidsdk_notification_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/com_mixpanel_android_notification_image"
+                android:contentDescription="@string/com_github_aloomaio_androidsdk_notification_image"
                 android:scaleType="fitCenter"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
-                android:src="@drawable/com_mixpanel_android_logo" />
+                android:src="@drawable/com_github_aloomaio_androidsdk_logo" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -44,7 +44,7 @@
             android:layout_weight="50"
             android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/com_mixpanel_android_button_exit_wrapper"
+                android:id="@+id/com_github_aloomaio_androidsdk_button_exit_wrapper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -53,8 +53,8 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/com_mixpanel_android_close"
-                    android:contentDescription="@string/com_mixpanel_android_close" />
+                    android:background="@drawable/com_github_aloomaio_androidsdk_close"
+                    android:contentDescription="@string/com_github_aloomaio_androidsdk_close" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/com_mixpanel_android_notification_title"
+                    android:id="@+id/com_github_aloomaio_androidsdk_notification_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="20dp"
@@ -73,7 +73,7 @@
                     android:textColor="#ffffff" />
 
                 <TextView
-                    android:id="@+id/com_mixpanel_android_notification_subtext"
+                    android:id="@+id/com_github_aloomaio_androidsdk_notification_subtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
@@ -85,17 +85,17 @@
                     android:textColor="#a9b5c5" />
 
                 <Button
-                    android:id="@+id/com_mixpanel_android_notification_button"
+                    android:id="@+id/com_github_aloomaio_androidsdk_notification_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:text="@string/com_mixpanel_android_done"
+                    android:text="@string/com_github_aloomaio_androidsdk_done"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    android:background="@drawable/com_mixpanel_android_cta_button" />
+                    android:background="@drawable/com_github_aloomaio_androidsdk_cta_button" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

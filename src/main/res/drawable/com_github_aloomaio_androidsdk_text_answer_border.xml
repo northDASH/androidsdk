@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
-   <solid android:color="@color/com_mixpanel_android_selected" />
+   <solid android:color="@color/com_github_aloomaio_androidsdk_selected" />
    <stroke android:width="1dp" android:color="#ffffff"/>
    <corners android:bottomRightRadius="5dp"
             android:bottomLeftRadius="5dp"

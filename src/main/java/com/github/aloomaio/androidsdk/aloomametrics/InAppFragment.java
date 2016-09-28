@@ -79,7 +79,7 @@ public class InAppFragment extends Fragment {
                     }
                 });
 
-                final ImageView notifImage = (ImageView) mInAppView.findViewById(R.id.com_mixpanel_android_notification_image);
+                final ImageView notifImage = (ImageView) mInAppView.findViewById(R.id.com_github_aloomaio_androidsdk_notification_image);
 
                 final float heightPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, mParent.getResources().getDisplayMetrics());
                 final TranslateAnimation translate = new TranslateAnimation(0, 0, heightPx, 0);
@@ -164,9 +164,9 @@ public class InAppFragment extends Fragment {
         if (null == mDisplayState) {
             cleanUp();
         } else {
-            mInAppView = inflater.inflate(R.layout.com_mixpanel_android_activity_notification_mini, container, false);
-            final TextView titleView = (TextView) mInAppView.findViewById(R.id.com_mixpanel_android_notification_title);
-            final ImageView notifImage = (ImageView) mInAppView.findViewById(R.id.com_mixpanel_android_notification_image);
+            mInAppView = inflater.inflate(R.layout.com_github_aloomaio_androidsdk_activity_notification_mini, container, false);
+            final TextView titleView = (TextView) mInAppView.findViewById(R.id.com_github_aloomaio_androidsdk_notification_title);
+            final ImageView notifImage = (ImageView) mInAppView.findViewById(R.id.com_github_aloomaio_androidsdk_notification_image);
 
             InAppNotification inApp = mDisplayState.getInAppNotification();
 
@@ -234,7 +234,7 @@ public class InAppFragment extends Fragment {
             // setCustomAnimations works on a per transaction level, so the animations set
             // when this fragment was created do not apply
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setCustomAnimations(0, R.anim.com_mixpanel_android_slide_down).remove(this).commit();
+            transaction.setCustomAnimations(0, R.anim.com_github_aloomaio_androidsdk_slide_down).remove(this).commit();
             UpdateDisplayState.releaseDisplayState(mDisplayStateId);
             mCleanedUp = true;
         }

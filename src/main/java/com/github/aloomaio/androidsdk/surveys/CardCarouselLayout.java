@@ -206,9 +206,9 @@ public class CardCarouselLayout extends ViewGroup {
         // Nice to have- if CardCarouselLayout rendered a card by default, we could see it in the
         // UI designer and make decisions.
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View v1 = inflater.inflate(R.layout.com_mixpanel_android_question_card, this, false);
+        final View v1 = inflater.inflate(R.layout.com_github_aloomaio_androidsdk_question_card, this, false);
         mVisibleCard = new QuestionCard(v1);
-        final View v2 = inflater.inflate(R.layout.com_mixpanel_android_question_card, this, false);
+        final View v2 = inflater.inflate(R.layout.com_github_aloomaio_androidsdk_question_card, this, false);
         mBackupCard = new QuestionCard(v2);
         this.addView(v1);
         this.addView(v2);
@@ -373,19 +373,19 @@ public class CardCarouselLayout extends ViewGroup {
             if (null == convertView) {
                 switch(getItemViewType(position)) {
                 case VIEW_TYPE_FIRST:
-                    viewId = R.layout.com_mixpanel_android_first_choice_answer;
+                    viewId = R.layout.com_github_aloomaio_androidsdk_first_choice_answer;
                     break;
                 case VIEW_TYPE_LAST:
-                    viewId = R.layout.com_mixpanel_android_last_choice_answer;
+                    viewId = R.layout.com_github_aloomaio_androidsdk_last_choice_answer;
                     break;
                 case VIEW_TYPE_MIDDLE:
-                    viewId = R.layout.com_mixpanel_android_middle_choice_answer;
+                    viewId = R.layout.com_github_aloomaio_androidsdk_middle_choice_answer;
                     break;
                 }
                 convertView = mInflater.inflate(viewId, parent, false);
             }
 
-            final TextView choiceText = (TextView) convertView.findViewById(R.id.com_mixpanel_android_multiple_choice_answer_text);
+            final TextView choiceText = (TextView) convertView.findViewById(R.id.com_github_aloomaio_androidsdk_multiple_choice_answer_text);
             final String choice = mChoices.get(position);
             choiceText.setText(choice);
             return convertView;
@@ -439,9 +439,9 @@ public class CardCarouselLayout extends ViewGroup {
 
         public QuestionCard(final View cardView) {
             mCardView = cardView;
-            mPromptView = (TextView) cardView.findViewWithTag("com_mixpanel_android_TAG_prompt_text");
-            mEditAnswerView = (EditText) cardView.findViewWithTag("com_mixpanel_android_TAG_text_answer");
-            mChoiceView = (ListView) cardView.findViewWithTag("com_mixpanel_android_TAG_choice_list");
+            mPromptView = (TextView) cardView.findViewWithTag("com_github_aloomaio_androidsdk_TAG_prompt_text");
+            mEditAnswerView = (EditText) cardView.findViewWithTag("com_github_aloomaio_androidsdk_TAG_text_answer");
+            mChoiceView = (ListView) cardView.findViewWithTag("com_github_aloomaio_androidsdk_TAG_choice_list");
             mEditAnswerView.setText("");
             mEditAnswerView.setOnEditorActionListener(new OnEditorActionListener() {
                 @Override

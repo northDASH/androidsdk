@@ -16,7 +16,7 @@ public class AConfig {
     // Unfortunately, as long as we support building from source in Eclipse,
     // we can't rely on BuildConfig.MIXPANEL_VERSION existing, so this must
     // be hard-coded both in our gradle files and here in code.
-    public static final String VERSION = "6.0.1";
+    public static final String VERSION = "6.0.2";
 
     public static boolean DEBUG = true;
 
