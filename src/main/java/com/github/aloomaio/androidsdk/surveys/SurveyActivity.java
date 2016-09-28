@@ -83,14 +83,14 @@ public class SurveyActivity extends Activity {
     }
 
     private void onCreateInAppNotification(Bundle savedInstanceState) {
-        setContentView(R.layout.com_mixpanel_android_activity_notification_full);
+        setContentView(R.layout.com_github_aloomaio_androidsdk_activity_notification_full);
 
-        final ImageView backgroundImage = (ImageView) findViewById(R.id.com_mixpanel_android_notification_gradient);
-        final FadingImageView inAppImageView = (FadingImageView) findViewById(R.id.com_mixpanel_android_notification_image);
-        final TextView titleView = (TextView) findViewById(R.id.com_mixpanel_android_notification_title);
-        final TextView subtextView = (TextView) findViewById(R.id.com_mixpanel_android_notification_subtext);
-        final Button ctaButton = (Button) findViewById(R.id.com_mixpanel_android_notification_button);
-        final LinearLayout closeButtonWrapper = (LinearLayout) findViewById(R.id.com_mixpanel_android_button_exit_wrapper);
+        final ImageView backgroundImage = (ImageView) findViewById(R.id.com_github_aloomaio_androidsdk_notification_gradient);
+        final FadingImageView inAppImageView = (FadingImageView) findViewById(R.id.com_github_aloomaio_androidsdk_notification_image);
+        final TextView titleView = (TextView) findViewById(R.id.com_github_aloomaio_androidsdk_notification_title);
+        final TextView subtextView = (TextView) findViewById(R.id.com_github_aloomaio_androidsdk_notification_subtext);
+        final Button ctaButton = (Button) findViewById(R.id.com_github_aloomaio_androidsdk_notification_button);
+        final LinearLayout closeButtonWrapper = (LinearLayout) findViewById(R.id.com_github_aloomaio_androidsdk_button_exit_wrapper);
 
         final UpdateDisplayState.DisplayState.InAppNotificationState notificationState =
                 (UpdateDisplayState.DisplayState.InAppNotificationState) mUpdateDisplayState.getDisplayState();
@@ -126,17 +126,17 @@ public class SurveyActivity extends Activity {
         subtextView.setText(inApp.getBody());
 
         final Bitmap inAppImage = inApp.getImage();
-        inAppImageView.setBackgroundResource(R.drawable.com_mixpanel_android_square_dropshadow);
+        inAppImageView.setBackgroundResource(R.drawable.com_github_aloomaio_androidsdk_square_dropshadow);
 
         if (inAppImage.getWidth() < SHADOW_SIZE_THRESHOLD_PX || inAppImage.getHeight() < SHADOW_SIZE_THRESHOLD_PX) {
-            inAppImageView.setBackgroundResource(R.drawable.com_mixpanel_android_square_nodropshadow);
+            inAppImageView.setBackgroundResource(R.drawable.com_github_aloomaio_androidsdk_square_nodropshadow);
         } else {
             final Bitmap scaledImage = Bitmap.createScaledBitmap(inAppImage, 1, 1, false);
             final int averageColor = scaledImage.getPixel(0, 0);
             final int averageAlpha = Color.alpha(averageColor);
 
             if (averageAlpha < 0xFF) {
-                inAppImageView.setBackgroundResource(R.drawable.com_mixpanel_android_square_nodropshadow);
+                inAppImageView.setBackgroundResource(R.drawable.com_github_aloomaio_androidsdk_square_nodropshadow);
             }
         }
         inAppImageView.setImageBitmap(inAppImage);
@@ -176,9 +176,9 @@ public class SurveyActivity extends Activity {
             @Override
 			public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    v.setBackgroundResource(R.drawable.com_mixpanel_android_cta_button_highlight);
+                    v.setBackgroundResource(R.drawable.com_github_aloomaio_androidsdk_cta_button_highlight);
                 } else {
-                    v.setBackgroundResource(R.drawable.com_mixpanel_android_cta_button);
+                    v.setBackgroundResource(R.drawable.com_github_aloomaio_androidsdk_cta_button);
                 }
                 return false;
             }
@@ -209,7 +209,7 @@ public class SurveyActivity extends Activity {
         subtextView.startAnimation(translate);
         ctaButton.startAnimation(translate);
 
-        final Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.com_mixpanel_android_fade_in);
+        final Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.com_github_aloomaio_androidsdk_fade_in);
         closeButtonWrapper.startAnimation(fadeIn);
     }
 
@@ -228,20 +228,20 @@ public class SurveyActivity extends Activity {
             return;
         }
 
-        setContentView(R.layout.com_mixpanel_android_activity_survey);
+        setContentView(R.layout.com_github_aloomaio_androidsdk_activity_survey);
 
         final UpdateDisplayState.DisplayState.SurveyState surveyState = getSurveyState();
         final Bitmap background = surveyState.getBackground();
         if (null == background) {
-            final View contentView = this.findViewById(R.id.com_mixpanel_android_activity_survey_id);
+            final View contentView = this.findViewById(R.id.com_github_aloomaio_androidsdk_activity_survey_id);
             contentView.setBackgroundColor(GRAY_30PERCENT);
         } else {
             getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), background));
         }
-        mPreviousButton = findViewById(R.id.com_mixpanel_android_button_previous);
-        mNextButton = findViewById(R.id.com_mixpanel_android_button_next);
-        mProgressTextView = (TextView) findViewById(R.id.com_mixpanel_android_progress_text);
-        mCardHolder = (CardCarouselLayout) findViewById(R.id.com_mixpanel_android_question_card_holder);
+        mPreviousButton = findViewById(R.id.com_github_aloomaio_androidsdk_button_previous);
+        mNextButton = findViewById(R.id.com_github_aloomaio_androidsdk_button_next);
+        mProgressTextView = (TextView) findViewById(R.id.com_github_aloomaio_androidsdk_progress_text);
+        mCardHolder = (CardCarouselLayout) findViewById(R.id.com_github_aloomaio_androidsdk_question_card_holder);
         mCardHolder.setOnQuestionAnsweredListener(new CardCarouselLayout.OnQuestionAnsweredListener() {
             @Override
             public void onQuestionAnswered(Question question, String answer) {
@@ -274,7 +274,7 @@ public class SurveyActivity extends Activity {
         alertBuilder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SurveyActivity.this.findViewById(R.id.com_mixpanel_android_activity_survey_id).setVisibility(View.VISIBLE);
+                SurveyActivity.this.findViewById(R.id.com_github_aloomaio_androidsdk_activity_survey_id).setVisibility(View.VISIBLE);
                 mSurveyBegun = true;
                 showQuestion(mCurrentQuestion);
             }

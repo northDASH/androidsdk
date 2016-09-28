@@ -48,7 +48,7 @@ public class FadingImageView extends ImageView {
             // at the bottom of the screen.
 
             final View root = (View) this.getRootView();
-            final View bottomWrapperView = (View) root.findViewById(R.id.com_mixpanel_android_notification_bottom_wrapper);
+            final View bottomWrapperView = (View) root.findViewById(R.id.com_github_aloomaio_androidsdk_notification_bottom_wrapper);
 
             // bottomWrapperView should have been measured already, so it's height should exist
             // Still, guard against potential weird black magic rendering issues.

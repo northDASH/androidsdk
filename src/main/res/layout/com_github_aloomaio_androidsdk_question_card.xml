@@ -15,7 +15,7 @@ https://groups.google.com/forum/#!msg/android-developers/qcclW4oekVY/IeQtoAruCTg
     tools:targetApi="ICE_CREAM_SANDWICH">
 
     <TextView
-        android:tag="com_mixpanel_android_TAG_prompt_text"
+        android:tag="com_github_aloomaio_androidsdk_TAG_prompt_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,10 +27,10 @@ https://groups.google.com/forum/#!msg/android-developers/qcclW4oekVY/IeQtoAruCTg
         android:textSize="18sp" />
 
     <com.github.aloomaio.androidsdk.surveys.AlwaysSubmittableEditText
-        android:tag="com_mixpanel_android_TAG_text_answer"
+        android:tag="com_github_aloomaio_androidsdk_TAG_text_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/com_mixpanel_android_text_answer_border"
+        android:background="@drawable/com_github_aloomaio_androidsdk_text_answer_border"
         android:textColor="#ffffff"
         android:textSize="18sp"
         android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
@@ -43,14 +43,14 @@ https://groups.google.com/forum/#!msg/android-developers/qcclW4oekVY/IeQtoAruCTg
 
     <!-- cacheColorHint setting from http://android-developers.blogspot.com/2009/01/why-is-my-list-black-android.html -->
     <ListView
-        android:tag="com_mixpanel_android_TAG_choice_list"
+        android:tag="com_github_aloomaio_androidsdk_TAG_choice_list"
         android:layout_width="match_parent"
         android:layout_height="0dp" android:layout_weight="1"
         android:textColor="#ffffff" android:textSize="18sp"
         android:scrollbars="none"
         android:requiresFadingEdge="vertical"
         android:fadingEdgeLength="30dp"
-        android:cacheColorHint="#00000000" android:listSelector="@drawable/com_mixpanel_android_nocolor_list"
+        android:cacheColorHint="#00000000" android:listSelector="@drawable/com_github_aloomaio_androidsdk_nocolor_list"
         android:background="@android:color/transparent" android:divider="@android:color/transparent"
         android:choiceMode="singleChoice" />
 </LinearLayout>

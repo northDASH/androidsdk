@@ -182,7 +182,7 @@ This version adds support for Android in app notifications.
 
   ```
   <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
-            android:theme="@style/com_mixpanel_android_SurveyActivityTheme"/>
+            android:theme="@style/com_github_aloomaio_androidsdk_SurveyActivityTheme"/>
   ```
 
 * A new unified set of functions have been created to make it easier to fetch and display surveys
@@ -227,7 +227,7 @@ This version adds support for Android in app notifications.
           <!-- This activity allows your application to show Mixpanel
                surveys and takeover in app notifications. -->
           <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
-                    android:theme="@style/com_mixpanel_android_SurveyActivityTheme" />
+                    android:theme="@style/com_github_aloomaio_androidsdk_SurveyActivityTheme" />
 
           <!-- This receiver will allow your application to register for
                and receive Mixpanel push notifications.

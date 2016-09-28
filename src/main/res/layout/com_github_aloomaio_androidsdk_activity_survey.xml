@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/com_mixpanel_android_activity_survey_id"
+    android:id="@+id/com_github_aloomaio_androidsdk_activity_survey_id"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:padding="20dp"
@@ -16,17 +16,17 @@
         android:clickable="true" >
 
         <ImageButton
-            android:id="@+id/com_mixpanel_android_button_previous"
+            android:id="@+id/com_github_aloomaio_androidsdk_button_previous"
             android:layout_width="35dp"
             android:layout_height="44dp"
             android:layout_alignParentLeft="true"
             android:clickable="true"
-            android:background="@drawable/com_mixpanel_android_arrowleft_insets"
-            android:contentDescription="@string/com_mixpanel_android_previous"
+            android:background="@drawable/com_github_aloomaio_androidsdk_arrowleft_insets"
+            android:contentDescription="@string/com_github_aloomaio_androidsdk_previous"
             android:onClick="goToPreviousQuestion" />
 
         <TextView
-            android:id="@+id/com_mixpanel_android_progress_text"
+            android:id="@+id/com_github_aloomaio_androidsdk_progress_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -35,18 +35,18 @@
             tools:ignore="SpUsage" />
 
         <ImageButton
-            android:id="@+id/com_mixpanel_android_button_next"
+            android:id="@+id/com_github_aloomaio_androidsdk_button_next"
             android:layout_width="35dp"
             android:layout_height="44dp"
             android:layout_alignParentRight="true"
             android:clickable="true"
-            android:background="@drawable/com_mixpanel_android_arrowright_insets"
-            android:contentDescription="@string/com_mixpanel_android_next"
+            android:background="@drawable/com_github_aloomaio_androidsdk_arrowright_insets"
+            android:contentDescription="@string/com_github_aloomaio_androidsdk_next"
             android:onClick="goToNextQuestion" />
     </RelativeLayout>
 
     <com.github.aloomaio.androidsdk.surveys.CardCarouselLayout
-        android:id="@+id/com_mixpanel_android_question_card_holder"
+        android:id="@+id/com_github_aloomaio_androidsdk_question_card_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp" android:layout_gravity="center"
         android:layout_weight="1" android:orientation="vertical"
@@ -63,12 +63,12 @@
             android:scaleType="fitStart"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/com_mixpanel_android_logo"
-            android:contentDescription="@string/com_mixpanel_android_logo"
+            android:src="@drawable/com_github_aloomaio_androidsdk_logo"
+            android:contentDescription="@string/com_github_aloomaio_androidsdk_logo"
             />
 
         <com.github.aloomaio.androidsdk.surveys.FadeOnPressButton
-            android:id="@+id/com_mixpanel_android_button_exit"
+            android:id="@+id/com_github_aloomaio_androidsdk_button_exit"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -78,7 +78,7 @@
             android:textSize="20dp"
             android:clickable="true"
             android:background="@android:color/transparent"
-            android:text="@string/com_mixpanel_android_exit"
+            android:text="@string/com_github_aloomaio_androidsdk_exit"
             android:gravity="right|center_vertical"
             android:onClick="completeSurvey"
             android:layout_marginBottom="3dp"
