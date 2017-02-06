@@ -19,6 +19,7 @@ android {
         // the relevant attributes of the <uses-sdk> tag in AndroidManifest.xml
         minSdkVersion 9
         targetSdkVersion 24
+        multiDexEnabled true
 
         lintOptions {
             abortOnError false
