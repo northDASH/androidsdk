@@ -86,7 +86,7 @@ public class DecideFunctionalTest extends AndroidTestCase {
 
         AloomaAPI api = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "TEST TOKEN testSurveyChecks") {
             @Override
-            AnalyticsMessages getAnalyticsMessages() {
+            AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return mMockMessages;
             }
 
@@ -204,7 +204,7 @@ public class DecideFunctionalTest extends AndroidTestCase {
 
         AloomaAPI api = new AloomaAPI(getContext(), mMockPreferences, useToken) {
             @Override
-            AnalyticsMessages getAnalyticsMessages() {
+            AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return mMockMessages;
             }
 
