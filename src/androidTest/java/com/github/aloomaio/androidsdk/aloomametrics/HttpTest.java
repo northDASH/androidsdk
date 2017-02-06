@@ -134,7 +134,7 @@ public class HttpTest extends AndroidTestCase {
 
         mMetrics = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "Test Message Queuing") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return listener;
             }
         };

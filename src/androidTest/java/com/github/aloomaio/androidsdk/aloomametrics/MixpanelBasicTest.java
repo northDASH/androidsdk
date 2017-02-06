@@ -115,7 +115,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
         };
         AloomaAPI mixpanel = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "TEST TOKEN testLooperDisaster") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return explodingMessages;
             }
         };
@@ -151,7 +151,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
 
         AloomaAPI mixpanel = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "TEST TOKEN testIdentifyAfterSet") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return listener;
             }
         };
@@ -212,7 +212,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
 
         AloomaAPI mixpanel = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "TEST TOKEN testIdentifyAfterSet") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                 return listener;
             }
         };
@@ -366,7 +366,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
 
         AloomaAPI metrics = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "Test Message Queuing") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                  return listener;
             }
         };
@@ -471,7 +471,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
             }
 
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                  return listener;
             }
         }
@@ -545,7 +545,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
             }
 
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                  return listener;
             }
         }
@@ -633,7 +633,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
 
                 AloomaAPI mixpanel = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "TEST TOKEN") {
                     @Override
-                    protected AnalyticsMessages getAnalyticsMessages() {
+                    protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                         return analyticsMessages;
                     }
                 };
@@ -822,7 +822,7 @@ public class MixpanelBasicTest extends AndroidTestCase {
 
         AloomaAPI metrics = new TestUtils.CleanAloomaAPI(getContext(), mMockPreferences, "Test Message Queuing") {
             @Override
-            protected AnalyticsMessages getAnalyticsMessages() {
+            protected AnalyticsMessages getAnalyticsMessages(String aloomaHost, boolean forceSSL) {
                  return listener;
             }
         };
